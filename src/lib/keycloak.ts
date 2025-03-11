@@ -2,13 +2,12 @@
 import Keycloak from 'keycloak-js';
 
 /**
- * Initialize a Keycloak instance
- * Replace these values with your actual Keycloak server details
+ * Initialize a Keycloak instance using environment variables
  */
 const keycloakConfig = {
-  url: 'http://localhost:8180/', // Replace with your Keycloak server URL
-  realm: 'myrealm', // Replace with your realm
-  clientId: 'myclient', // Replace with your client ID
+  url: import.meta.env.VITE_KEYCLOAK_URL || 'http://localhost:8080/', 
+  realm: import.meta.env.VITE_KEYCLOAK_REALM || 'bighammer-realm',
+  clientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID || 'bighammer-ui',
 };
 
 // Create Keycloak instance

@@ -24,6 +24,9 @@ export const KeycloakProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useState<string | undefined>(undefined);
   const [refreshToken, setRefreshToken] = useState<string | undefined>(undefined);
 
+  // Get redirect URI from environment variables
+  const redirectUri = import.meta.env.VITE_KEYCLOAK_REDIRECT_URI || window.location.origin;
+
   // Initialize Keycloak
   useEffect(() => {
     const initKeycloak = async () => {
@@ -32,6 +35,7 @@ export const KeycloakProvider = ({ children }: { children: ReactNode }) => {
           onLoad: 'check-sso',
           silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html',
           pkceMethod: 'S256',
+          redirectUri,
         });
 
         setInitialized(true);
@@ -76,17 +80,19 @@ export const KeycloakProvider = ({ children }: { children: ReactNode }) => {
       // Clean up event listeners
       keycloak.onTokenExpired = undefined;
     };
-  }, []);
+  }, [redirectUri]);
 
   // Login function
   const login = useCallback(async () => {
     try {
-      await keycloak.login();
+      await keycloak.login({
+        redirectUri,
+      });
     } catch (error) {
       console.error('Login error:', error);
       toast.error('Login failed. Please try again.');
     }
-  }, []);
+  }, [redirectUri]);
 
   // Logout function
   const logout = useCallback(async () => {
@@ -96,12 +102,14 @@ export const KeycloakProvider = ({ children }: { children: ReactNode }) => {
       setToken(undefined);
       setRefreshToken(undefined);
       setAuthenticated(false);
-      await keycloak.logout();
+      await keycloak.logout({
+        redirectUri,
+      });
     } catch (error) {
       console.error('Logout error:', error);
       toast.error('Logout failed. Please try again.');
     }
-  }, []);
+  }, [redirectUri]);
 
   return (
     <KeycloakContext.Provider value={{
