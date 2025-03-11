@@ -31,8 +31,12 @@ export const KeycloakProvider = ({ children }: { children: ReactNode }) => {
 
   // Initialize Keycloak
   useEffect(() => {
+    let mounted = true;
+    
     const initKeycloak = async () => {
       try {
+        if (!mounted) return;
+        
         console.log('Initializing Keycloak with redirectUri:', redirectUri);
         
         const authenticated = await keycloak.init({
@@ -42,6 +46,8 @@ export const KeycloakProvider = ({ children }: { children: ReactNode }) => {
           redirectUri,
           checkLoginIframe: false,
         });
+
+        if (!mounted) return;
 
         console.log('Keycloak initialized, authenticated:', authenticated);
         setInitialized(true);
@@ -75,15 +81,18 @@ export const KeycloakProvider = ({ children }: { children: ReactNode }) => {
           };
         }
       } catch (error) {
+        if (!mounted) return;
+        
         console.error('Keycloak initialization error:', error);
-        toast.error('Failed to connect to authentication service');
-        setInitialized(true);
+        // Throw the error to be caught by ErrorBoundary
+        throw new Error('Failed to initialize authentication service');
       }
     };
 
     initKeycloak();
 
     return () => {
+      mounted = false;
       keycloak.onTokenExpired = undefined;
     };
   }, [redirectUri]);
