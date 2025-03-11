@@ -35,7 +35,7 @@ export const KeycloakProvider = ({ children }: { children: ReactNode }) => {
         console.log('Initializing Keycloak with redirectUri:', redirectUri);
         
         const authenticated = await keycloak.init({
-          onLoad: 'check-sso',
+          onLoad: 'login-required', // Changed from 'check-sso' to 'login-required'
           silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html',
           pkceMethod: 'S256',
           redirectUri,
