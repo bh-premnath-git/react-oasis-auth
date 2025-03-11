@@ -2,6 +2,7 @@
 import { useState, useEffect, createContext, useContext, useCallback, ReactNode } from 'react';
 import keycloak from '@/lib/keycloak';
 import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 // Define the context type
 type KeycloakContextType = {
@@ -66,6 +67,9 @@ export const KeycloakProvider = ({ children }: { children: ReactNode }) => {
               logout();
             });
           };
+          
+          // Redirect to dashboard when authenticated
+          window.location.href = '/dashboard';
         }
       } catch (error) {
         console.error('Keycloak initialization error:', error);

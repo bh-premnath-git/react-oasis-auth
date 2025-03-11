@@ -1,7 +1,7 @@
 
 import { useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
-import { useLocation, Navigate } from "react-router-dom";
+import { useLocation, Navigate, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { LogIn } from "lucide-react";
 import { motion } from "framer-motion";
@@ -9,14 +9,17 @@ import { motion } from "framer-motion";
 const Login = () => {
   const { isAuthenticated, isInitialized, login } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
   
   // Get the intended destination from location state or default to dashboard
   const from = location.state?.from?.pathname || "/dashboard";
   
-  // Redirect to the original destination if already authenticated
-  if (isAuthenticated && isInitialized) {
-    return <Navigate to={from} replace />;
-  }
+  // Effect to redirect to dashboard when authenticated
+  useEffect(() => {
+    if (isAuthenticated && isInitialized) {
+      navigate(from, { replace: true });
+    }
+  }, [isAuthenticated, isInitialized, from, navigate]);
   
   // Show loading state while Keycloak initializes
   if (!isInitialized) {
@@ -25,6 +28,11 @@ const Login = () => {
         <div className="w-8 h-8 border-t-2 border-b-2 border-primary rounded-full animate-spin"></div>
       </div>
     );
+  }
+
+  // Don't show login page if already authenticated
+  if (isAuthenticated) {
+    return null;
   }
 
   return (
