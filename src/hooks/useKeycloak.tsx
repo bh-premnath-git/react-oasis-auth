@@ -25,24 +25,29 @@ export const KeycloakProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useState<string | undefined>(undefined);
   const [refreshToken, setRefreshToken] = useState<string | undefined>(undefined);
 
-  // Get redirect URI from environment variables
+  // Get redirect URI from environment variables or use current origin
   const redirectUri = import.meta.env.VITE_KEYCLOAK_REDIRECT_URI || window.location.origin;
 
   // Initialize Keycloak
   useEffect(() => {
     const initKeycloak = async () => {
       try {
+        console.log('Initializing Keycloak with redirectUri:', redirectUri);
+        
         const authenticated = await keycloak.init({
           onLoad: 'check-sso',
           silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html',
           pkceMethod: 'S256',
           redirectUri,
+          checkLoginIframe: false, // Disable login iframe checking
         });
 
+        console.log('Keycloak initialized, authenticated:', authenticated);
         setInitialized(true);
         setAuthenticated(authenticated);
         
         if (authenticated) {
+          console.log('User is authenticated, token available:', !!keycloak.token);
           setToken(keycloak.token);
           setRefreshToken(keycloak.refreshToken);
           
@@ -61,15 +66,12 @@ export const KeycloakProvider = ({ children }: { children: ReactNode }) => {
                 sessionStorage.setItem('kc_token', keycloak.token || '');
                 sessionStorage.setItem('kc_refreshToken', keycloak.refreshToken || '');
               }
-            }).catch(() => {
-              console.error('Failed to refresh token');
+            }).catch((error) => {
+              console.error('Failed to refresh token:', error);
               // Force re-login
               logout();
             });
           };
-          
-          // Redirect to dashboard when authenticated
-          window.location.href = '/dashboard';
         }
       } catch (error) {
         console.error('Keycloak initialization error:', error);

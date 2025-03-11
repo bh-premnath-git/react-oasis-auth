@@ -10,6 +10,8 @@ const keycloakConfig = {
   clientId: import.meta.env.VITE_KEYCLOAK_CLIENT_ID || 'bighammer-ui',
 };
 
+console.log('Keycloak configuration:', keycloakConfig);
+
 // Create Keycloak instance
 const keycloak = new Keycloak(keycloakConfig);
 

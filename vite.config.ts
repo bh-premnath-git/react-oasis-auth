@@ -8,7 +8,7 @@ import { componentTagger } from "lovable-tagger";
 export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
-    port: 5000, // Match with VITE_KEYCLOAK_REDIRECT_URI
+    port: 8080, // Match with Keycloak server port
   },
   plugins: [
     react(),
