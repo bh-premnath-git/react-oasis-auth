@@ -18,7 +18,7 @@ const ProtectedRoute = ({
   const { isAuthenticated, isInitialized } = useAuth();
   const location = useLocation();
 
-  // If still initializing, show nothing
+  // If still initializing, show loading indicator
   if (!isInitialized) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -27,9 +27,10 @@ const ProtectedRoute = ({
     );
   }
 
-  // If authentication is required but user is not authenticated
+  // If authentication is required but user is not authenticated,
+  // redirect to login page and save the attempted location
   if (requireAuth && !isAuthenticated) {
-    return <Navigate to="/" state={{ from: location }} replace />;
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   // If route is only for non-authenticated users (like login page) but user is authenticated

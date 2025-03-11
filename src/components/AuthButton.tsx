@@ -3,15 +3,17 @@ import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { LogIn, LogOut } from "lucide-react";
 import { motion } from "framer-motion";
+import { Link, useNavigate } from "react-router-dom";
 
 const AuthButton = () => {
   const { isAuthenticated, login, logout } = useAuth();
+  const navigate = useNavigate();
 
   const handleAuth = async () => {
     if (isAuthenticated) {
       await logout();
     } else {
-      await login();
+      navigate("/login");
     }
   };
 
