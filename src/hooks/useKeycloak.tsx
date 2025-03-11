@@ -25,8 +25,9 @@ export const KeycloakProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useState<string | undefined>(undefined);
   const [refreshToken, setRefreshToken] = useState<string | undefined>(undefined);
 
-  // Get redirect URI from environment variables or use current origin
+  // Get redirect URI from environment variable
   const redirectUri = import.meta.env.VITE_KEYCLOAK_REDIRECT_URI || window.location.origin;
+  console.log('Using redirect URI:', redirectUri);
 
   // Initialize Keycloak
   useEffect(() => {
@@ -35,11 +36,11 @@ export const KeycloakProvider = ({ children }: { children: ReactNode }) => {
         console.log('Initializing Keycloak with redirectUri:', redirectUri);
         
         const authenticated = await keycloak.init({
-          onLoad: 'login-required', // Changed from 'check-sso' to 'login-required'
+          onLoad: 'login-required',
           silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html',
           pkceMethod: 'S256',
           redirectUri,
-          checkLoginIframe: false, // Disable login iframe checking
+          checkLoginIframe: false,
         });
 
         console.log('Keycloak initialized, authenticated:', authenticated);
@@ -83,7 +84,6 @@ export const KeycloakProvider = ({ children }: { children: ReactNode }) => {
     initKeycloak();
 
     return () => {
-      // Clean up event listeners
       keycloak.onTokenExpired = undefined;
     };
   }, [redirectUri]);
