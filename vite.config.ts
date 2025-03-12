@@ -18,7 +18,7 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       host: "::",
-      port: parseInt(env.VITE_KEYCLOAK_PORT, 10),
+      port: 8080,
     },
   }
 })
