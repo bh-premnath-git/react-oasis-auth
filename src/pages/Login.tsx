@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
-import { useLocation, Navigate, useNavigate } from "react-router-dom";
+import {  Navigate, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { LogIn } from "lucide-react";
 import { motion } from "framer-motion";
 
 const Login = () => {
   const { isAuthenticated, isInitialized, login } = useAuth();
-  const location = useLocation();
   const navigate = useNavigate();
   const [loginAttempted, setLoginAttempted] = useState(false);
   

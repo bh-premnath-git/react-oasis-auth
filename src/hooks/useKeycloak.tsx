@@ -2,7 +2,6 @@
 import { useState, useEffect, createContext, useContext, useCallback, ReactNode } from 'react';
 import keycloak from '@/lib/keycloak';
 import { toast } from 'sonner';
-import { useNavigate } from 'react-router-dom';
 
 // Define the context type
 type KeycloakContextType = {
