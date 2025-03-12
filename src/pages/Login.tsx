@@ -11,8 +11,8 @@ const Login = () => {
   const location = useLocation();
   const navigate = useNavigate();
   
-  // Get the intended destination from location state or default to dashboard
-  const from = location.state?.from?.pathname || "/dashboard";
+  // Always redirect to dashboard when authenticated
+  const from = "/dashboard";
   
   // Effect to redirect to dashboard when authenticated
   useEffect(() => {
@@ -32,7 +32,7 @@ const Login = () => {
 
   // Don't show login page if already authenticated
   if (isAuthenticated) {
-    return null;
+    return <Navigate to="/dashboard" replace />;
   }
 
   return (

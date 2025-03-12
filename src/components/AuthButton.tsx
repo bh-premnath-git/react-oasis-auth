@@ -13,7 +13,8 @@ const AuthButton = () => {
     if (isAuthenticated) {
       await logout();
     } else {
-      navigate("/login");
+      // Direct login will redirect to dashboard via the login implementation
+      await login();
     }
   };
 

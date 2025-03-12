@@ -40,7 +40,7 @@ export const KeycloakProvider = ({ children }: { children: ReactNode }) => {
         console.log('Initializing Keycloak with redirectUri:', redirectUri);
         
         const authenticated = await keycloak.init({
-          onLoad: 'login-required',
+          onLoad: 'check-sso',
           silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html',
           pkceMethod: 'S256',
           redirectUri,
@@ -61,6 +61,11 @@ export const KeycloakProvider = ({ children }: { children: ReactNode }) => {
           // Save token to sessionStorage
           sessionStorage.setItem('kc_token', keycloak.token || '');
           sessionStorage.setItem('kc_refreshToken', keycloak.refreshToken || '');
+          
+          // Redirect to dashboard if we're on the home page
+          if (window.location.pathname === '/') {
+            window.location.href = '/dashboard';
+          }
           
           // Set up token refresh
           keycloak.onTokenExpired = () => {
@@ -101,13 +106,13 @@ export const KeycloakProvider = ({ children }: { children: ReactNode }) => {
   const login = useCallback(async () => {
     try {
       await keycloak.login({
-        redirectUri,
+        redirectUri: window.location.origin + '/dashboard',
       });
     } catch (error) {
       console.error('Login error:', error);
       toast.error('Login failed. Please try again.');
     }
-  }, [redirectUri]);
+  }, []);
 
   // Logout function
   const logout = useCallback(async () => {
