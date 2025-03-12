@@ -35,7 +35,7 @@ const ProtectedRoute = ({
 
   // If route is only for non-authenticated users (like login page) but user is authenticated
   if (!requireAuth && isAuthenticated) {
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to="/dataops-hub" replace />;
   }
 
   // Return children if all conditions are satisfied

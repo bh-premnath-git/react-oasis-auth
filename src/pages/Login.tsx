@@ -11,7 +11,7 @@ const Login = () => {
   const [loginAttempted, setLoginAttempted] = useState(false);
   
   // Always redirect to dashboard when authenticated
-  const from = "/dashboard";
+  const from = "/dataops-hub";
   
   // Effect to redirect to dashboard when authenticated
   useEffect(() => {
@@ -42,7 +42,7 @@ const Login = () => {
 
   // Don't show login page if already authenticated
   if (isAuthenticated) {
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to="/dataops-hub" replace />;
   }
 
   return (

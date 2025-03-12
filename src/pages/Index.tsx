@@ -42,7 +42,7 @@ const Index = () => {
           >
             {isAuthenticated ? (
               <Button asChild size="lg" className="glass-button">
-                <Link to="/dashboard">
+                <Link to="/dataops-hub">
                   Dashboard
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>

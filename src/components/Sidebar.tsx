@@ -1,6 +1,7 @@
 
 import { NavLink, useNavigate } from "react-router-dom";
-import { ChevronRight, ChevronLeft, LogOut } from "lucide-react";
+import { ChevronRight, ChevronLeft, LogOut, Sun, Moon } from "lucide-react";
+import logo from "/logo.svg";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,9 +15,11 @@ import { useSidebar } from "@/context/SidebarContext";
 import { useNavigation } from "@/hooks/useNavigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/hooks/useAuth";
+import { useTheme } from "@/context/ThemeContext";
 
 export function Sidebar() {
   const { isExpanded, toggleSidebar } = useSidebar();
+  const { theme, toggleTheme } = useTheme();
   const navigation = useNavigation();
   const { getUserInfo, logout } = useAuth();
   const userInfo = getUserInfo();
@@ -41,16 +44,16 @@ export function Sidebar() {
       )}
     >
       <div className="h-16 flex items-center px-4 border-b">
-        <div className="flex items-center cursor-pointer overflow-hidden" onClick={() => navigate("/dashboard")}>
-          <span className="h-6 w-6 flex items-center justify-center text-primary font-bold text-2xl">B</span>
+        <div className="flex items-center cursor-pointer overflow-hidden" onClick={() => navigate("/dataops-hub")}>
+          <img src={logo} alt="Bighammer AI" className="h-6 w-6 text-sidebar-foreground shrink-0" />
           <div className="overflow-hidden">
-            <h1 
+            <h1
               className={cn(
                 "text-lg font-semibold font-sans ml-2",
                 "transition-all duration-300 ease-in-out",
                 "whitespace-nowrap transform",
-                isExpanded 
-                  ? "opacity-100 translate-x-0" 
+                isExpanded
+                  ? "opacity-100 translate-x-0"
                   : "opacity-0 -translate-x-4 pointer-events-none"
               )}
             >
@@ -104,12 +107,12 @@ export function Sidebar() {
                 )}
               </NavLink>
               {isExpanded && item.subItems && (
-                <ul 
+                <ul
                   className={cn(
                     "mt-1 ml-4 space-y-1 border-l pl-3",
                     "transition-all duration-200 ease-in-out origin-top",
-                    navigation.isItemExpanded(item.path) 
-                      ? "opacity-100 max-h-96 transform scale-y-100" 
+                    navigation.isItemExpanded(item.path)
+                      ? "opacity-100 max-h-96 transform scale-y-100"
                       : "opacity-0 max-h-0 transform scale-y-0 pointer-events-none"
                   )}
                 >
@@ -153,12 +156,12 @@ export function Sidebar() {
               </Button>
             </DropdownMenuTrigger>
             {isExpanded && (
-              <div 
+              <div
                 className={cn(
                   "flex-1 ml-3 overflow-hidden",
                   "transition-all duration-300 ease-in-out",
-                  isExpanded 
-                    ? "opacity-100 max-w-[200px]" 
+                  isExpanded
+                    ? "opacity-100 max-w-[200px]"
                     : "opacity-0 max-w-0 pointer-events-none"
                 )}
               >
@@ -166,8 +169,8 @@ export function Sidebar() {
                 <p className="text-xs text-muted-foreground truncate">{userInfo?.email}</p>
               </div>
             )}
-            <DropdownMenuContent 
-              align="end" 
+            <DropdownMenuContent
+              align="end"
               className={cn(
                 "transition-all duration-200 ease-in-out",
                 isExpanded ? "min-w-[14rem]" : "w-auto min-w-[8rem]"
@@ -179,6 +182,22 @@ export function Sidebar() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleTheme}
+            className={cn(
+              "text-sidebar-foreground hover:bg-sidebar-accent",
+              "transition-all duration-200 ease-in-out",
+              isExpanded ? "pl-1" : "hover:scale-110"
+            )}
+          >
+            {theme === 'dark' ? (
+              <Sun className="h-4 w-4" />
+            ) : (
+              <Moon className="h-4 w-4" />
+            )}
+          </Button>
         </div>
       </div>
     </div>

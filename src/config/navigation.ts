@@ -1,4 +1,3 @@
-
 import { 
   Database, 
   LayoutDashboard, 
@@ -13,23 +12,11 @@ import {
   FolderGit2,
   Settings2,
   Cable,
-  User,
-  Home
 } from "lucide-react";
 import type { NavItem, NavigationItem } from "@/types/navigation";
 import { ROUTES } from "./routes";
 
 export const navigationItems: NavItem[] = [
-  {
-    title: "Dashboard",
-    icon: Home,
-    path: ROUTES.DASHBOARD,
-  },
-  {
-    title: "Profile",
-    icon: User,
-    path: ROUTES.PROFILE,
-  },
   {
     title: "Data Catalog",
     icon: Database,
@@ -109,11 +96,6 @@ export const navigationItems: NavItem[] = [
         parent: ROUTES.ADMIN.INDEX
       }
     ],
-  },
-  {
-    title: "Settings",
-    icon: Settings,
-    path: ROUTES.SETTINGS,
   },
 ];
 

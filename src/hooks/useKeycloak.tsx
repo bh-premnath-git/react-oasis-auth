@@ -63,7 +63,7 @@ export const KeycloakProvider = ({ children }: { children: ReactNode }) => {
           
           // Redirect to dashboard if we're on the home page
           if (window.location.pathname === '/') {
-            window.location.href = '/dashboard';
+            window.location.href = '/dataops-hub';
           }
           
           // Set up token refresh
@@ -105,7 +105,7 @@ export const KeycloakProvider = ({ children }: { children: ReactNode }) => {
   const login = useCallback(async () => {
     try {
       await keycloak.login({
-        redirectUri: window.location.origin + '/dashboard',
+        redirectUri: window.location.origin + '/dataops-hub',
       });
     } catch (error) {
       console.error('Login error:', error);

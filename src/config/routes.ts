@@ -2,7 +2,7 @@
 export const ROUTES = {
   INDEX: '/',
   LOGIN: '/login',
-  DASHBOARD: '/dashboard',
+  DASHBOARD: '/dataops-hub',
   PROFILE: '/profile',
   SETTINGS: '/settings',
   DATA_CATALOG: '/data-catalog',

@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -10,9 +9,6 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import ProtectedLayout from "./components/ProtectedLayout";
 import Navbar from "./components/Navbar";
 import Index from "./pages/Index";
-import Dashboard from "./pages/Dashboard";
-import Profile from "./pages/Profile";
-import Settings from "./pages/Settings";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import { lazy, Suspense } from "react";
@@ -85,11 +81,6 @@ const App = () => (
                   </ProtectedRoute>
                 }
               >
-                {/* Default Dashboard Routes */}
-                <Route path={ROUTES.DASHBOARD} element={<Dashboard />} />
-                <Route path={ROUTES.PROFILE} element={<Profile />} />
-                <Route path={ROUTES.SETTINGS} element={<Settings />} />
-
                 {/* Data Catalog Routes */}
                 <Route path={ROUTES.DATA_CATALOG} element={
                   <Suspense fallback={<LoadingFallback />}>
