@@ -1,26 +1,18 @@
+import { useEffect } from 'react';
+import { withPageErrorBoundary} from '@/components/withPageErrorBoundary';
+import { EditUser } from '@/features/admin/users/EditUser';
+import { fetchProjects } from '@/store/slices/admin/usersSlice';
+import { useAppDispatch } from '@/hooks/useRedux';
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useParams } from "react-router-dom";
+const UserEdit = () => {
+    const dispatch = useAppDispatch();
+    useEffect(() => {
+      dispatch(fetchProjects());
+    }, [dispatch]);
 
-const EditUser = () => {
-  const { id } = useParams();
-  
-  return (
-    <div className="space-y-4">
-      <h1 className="text-3xl font-bold">Edit User</h1>
-      <p className="text-muted-foreground">Modify user account with ID: {id}</p>
-      
-      <Card>
-        <CardHeader>
-          <CardTitle>Edit User</CardTitle>
-          <CardDescription>Update user information</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p>This form will allow you to edit user information for user ID: {id}</p>
-        </CardContent>
-      </Card>
-    </div>
-  );
-};
+    return (
+        <EditUser />
+    )
+}
 
-export default EditUser;
+export default withPageErrorBoundary(UserEdit, 'UserEdit');

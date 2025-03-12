@@ -1,26 +1,10 @@
+import { withPageErrorBoundary} from '@/components/withPageErrorBoundary';
+import { EditProject } from '@/features/admin/projects/EditProject';
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useParams } from "react-router-dom";
-
-const EditProject = () => {
-  const { id } = useParams();
-  
+const ProjectEdit = () => {
   return (
-    <div className="space-y-4">
-      <h1 className="text-3xl font-bold">Edit Project</h1>
-      <p className="text-muted-foreground">Modify project with ID: {id}</p>
-      
-      <Card>
-        <CardHeader>
-          <CardTitle>Edit Project</CardTitle>
-          <CardDescription>Update project information</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p>This form will allow you to edit project information for project ID: {id}</p>
-        </CardContent>
-      </Card>
-    </div>
-  );
-};
+    <EditProject />
+  )
+}
 
-export default EditProject;
+export default withPageErrorBoundary(ProjectEdit, 'ProjectEdit');

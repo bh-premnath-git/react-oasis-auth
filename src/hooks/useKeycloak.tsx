@@ -16,8 +16,8 @@ type KeycloakContextType = {
 // Create a context to share Keycloak state
 const KeycloakContext = createContext<KeycloakContextType | undefined>(undefined);
 
-// Check if we're running in a browser environment
-const isBrowser = typeof window !== 'undefined';
+// More comprehensive check for browser environment that includes Web Crypto API
+const isBrowser = typeof window !== 'undefined' && window.crypto && window.crypto.subtle;
 
 // Provider component to wrap around the app
 export const KeycloakProvider = ({ children }: { children: ReactNode }) => {
@@ -37,8 +37,11 @@ export const KeycloakProvider = ({ children }: { children: ReactNode }) => {
 
   // Initialize Keycloak only in browser environment
   useEffect(() => {
-    // Skip initialization if not in browser
-    if (!isBrowser) return;
+    // Skip initialization if not in browser with Web Crypto API
+    if (!isBrowser) {
+      console.log('Skipping Keycloak initialization: Web Crypto API not available');
+      return;
+    }
     
     let mounted = true;
     
@@ -68,8 +71,10 @@ export const KeycloakProvider = ({ children }: { children: ReactNode }) => {
           setRefreshToken(keycloak.refreshToken);
           
           // Save token to sessionStorage
-          sessionStorage.setItem('kc_token', keycloak.token || '');
-          sessionStorage.setItem('kc_refreshToken', keycloak.refreshToken || '');
+          if (typeof sessionStorage !== 'undefined') {
+            sessionStorage.setItem('kc_token', keycloak.token || '');
+            sessionStorage.setItem('kc_refreshToken', keycloak.refreshToken || '');
+          }
           
           // Redirect to dashboard if we're on the home page
           if (window.location.pathname === '/') {
@@ -84,8 +89,10 @@ export const KeycloakProvider = ({ children }: { children: ReactNode }) => {
                 console.log('Token refreshed');
                 setToken(keycloak.token);
                 setRefreshToken(keycloak.refreshToken);
-                sessionStorage.setItem('kc_token', keycloak.token || '');
-                sessionStorage.setItem('kc_refreshToken', keycloak.refreshToken || '');
+                if (typeof sessionStorage !== 'undefined') {
+                  sessionStorage.setItem('kc_token', keycloak.token || '');
+                  sessionStorage.setItem('kc_refreshToken', keycloak.refreshToken || '');
+                }
               }
             }).catch((error) => {
               console.error('Failed to refresh token:', error);
@@ -98,8 +105,8 @@ export const KeycloakProvider = ({ children }: { children: ReactNode }) => {
         if (!mounted) return;
         
         console.error('Keycloak initialization error:', error);
-        // Throw the error to be caught by ErrorBoundary
-        throw new Error('Failed to initialize authentication service');
+        // Show a more user-friendly error
+        toast.error('Authentication service initialization failed. Please try again later.');
       }
     };
 
@@ -115,7 +122,12 @@ export const KeycloakProvider = ({ children }: { children: ReactNode }) => {
 
   // Login function
   const login = useCallback(async () => {
-    if (!isBrowser) return;
+    // Verify browser environment with Web Crypto API before attempting login
+    if (!isBrowser) {
+      console.error('Login error: Web Crypto API is not available');
+      toast.error('Login not available in this environment');
+      return;
+    }
     
     try {
       await keycloak.login({
@@ -129,11 +141,18 @@ export const KeycloakProvider = ({ children }: { children: ReactNode }) => {
 
   // Logout function
   const logout = useCallback(async () => {
-    if (!isBrowser) return;
+    // Verify browser environment with Web Crypto API before attempting logout
+    if (!isBrowser) {
+      console.error('Logout error: Web Crypto API is not available');
+      toast.error('Logout not available in this environment');
+      return;
+    }
     
     try {
-      sessionStorage.removeItem('kc_token');
-      sessionStorage.removeItem('kc_refreshToken');
+      if (typeof sessionStorage !== 'undefined') {
+        sessionStorage.removeItem('kc_token');
+        sessionStorage.removeItem('kc_refreshToken');
+      }
       setToken(undefined);
       setRefreshToken(undefined);
       setAuthenticated(false);
