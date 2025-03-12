@@ -15,7 +15,6 @@ export const Header = () => {
     )}>
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center">
-          <h2 className="text-xl font-semibold mr-6">Bighammer AI</h2>
           <NavigationBreadcrumb />
         </div>
       </div>

@@ -28,7 +28,7 @@ export function NavigationBreadcrumb() {
 
   const getBreadcrumbItems = (): BreadcrumbItem[] => {
     const currentPath = location.pathname;
-    const items: BreadcrumbItem[] = [{ title: "Home", path: "/" }];
+    const items: BreadcrumbItem[] = [{ title: "Home", path: "/dataops-hub" }];
 
     if (currentPath === "/") return items;
 
