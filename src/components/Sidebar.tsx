@@ -16,6 +16,8 @@ import { useNavigation } from "@/hooks/useNavigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/hooks/useAuth";
 import { useTheme } from "@/context/ThemeContext";
+import { Switch } from "@/components/ui/switch";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 export function Sidebar() {
   const { isExpanded, toggleSidebar } = useSidebar();
@@ -182,22 +184,36 @@ export function Sidebar() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={toggleTheme}
-            className={cn(
-              "text-sidebar-foreground hover:bg-sidebar-accent",
-              "transition-all duration-200 ease-in-out",
-              isExpanded ? "pl-1" : "hover:scale-110"
-            )}
-          >
-            {theme === 'dark' ? (
-              <Sun className="h-4 w-4" />
-            ) : (
-              <Moon className="h-4 w-4" />
-            )}
-          </Button>
+
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className={cn(
+                  "flex items-center gap-2",
+                  isExpanded ? "w-auto" : "justify-center"
+                )}>
+                  {isExpanded && <span className="text-xs text-muted-foreground">{theme === 'dark' ? 'Dark' : 'Light'}</span>}
+                  <Switch
+                    checked={theme === 'dark'}
+                    onCheckedChange={toggleTheme}
+                    className={cn(
+                      "data-[state=checked]:bg-primary data-[state=unchecked]:bg-input",
+                      !isExpanded && "ml-0" 
+                    )}
+                  />
+                  <span className="sr-only">{theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}</span>
+                  {theme === 'dark' ? (
+                    <Moon className="h-4 w-4 text-yellow-300" />
+                  ) : (
+                    <Sun className="h-4 w-4 text-amber-500" />
+                  )}
+                </div>
+              </TooltipTrigger>
+              <TooltipContent side="right">
+                <p>{theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       </div>
     </div>
