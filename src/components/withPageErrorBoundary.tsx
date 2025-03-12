@@ -2,7 +2,7 @@
 import { ErrorBoundary } from "react-error-boundary";
 import { Button } from "@/components/ui/button";
 
-function ErrorFallback({ error, resetErrorBoundary }: { error: Error; resetErrorBoundary: () => void }) {
+export function ErrorFallback({ error, resetErrorBoundary }: { error: Error; resetErrorBoundary: () => void }) {
   return (
     <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-6">
       <div className="text-center space-y-4">
