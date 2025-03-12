@@ -142,7 +142,6 @@ export function Sidebar() {
         </ul>
       </nav>
       <div className="h-auto border-t">
-        {/* User Profile Section */}
         <div className={cn(
           "p-3 flex items-center",
           isExpanded ? "justify-between" : "justify-center"
@@ -184,18 +183,10 @@ export function Sidebar() {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-
-        {/* Theme Toggle Section */}
         <div className={cn(
           "px-3 pb-3",
           isExpanded ? "flex justify-between items-center" : "flex justify-center"
         )}>
-          {isExpanded && (
-            <span className="text-xs text-muted-foreground">
-              {theme === 'dark' ? 'Dark Mode' : 'Light Mode'}
-            </span>
-          )}
-          
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
