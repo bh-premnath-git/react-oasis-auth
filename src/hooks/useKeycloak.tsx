@@ -1,4 +1,3 @@
-
 import { useState, useEffect, createContext, useContext, useCallback, ReactNode } from 'react';
 import keycloak from '@/lib/keycloak';
 import { toast } from 'sonner';
@@ -17,6 +16,9 @@ type KeycloakContextType = {
 // Create a context to share Keycloak state
 const KeycloakContext = createContext<KeycloakContextType | undefined>(undefined);
 
+// Check if we're running in a browser environment
+const isBrowser = typeof window !== 'undefined';
+
 // Provider component to wrap around the app
 export const KeycloakProvider = ({ children }: { children: ReactNode }) => {
   const [initialized, setInitialized] = useState(false);
@@ -25,11 +27,19 @@ export const KeycloakProvider = ({ children }: { children: ReactNode }) => {
   const [refreshToken, setRefreshToken] = useState<string | undefined>(undefined);
 
   // Get redirect URI from environment variable
-  const redirectUri = import.meta.env.VITE_KEYCLOAK_REDIRECT_URI || window.location.origin;
-  console.log('Using redirect URI:', redirectUri);
+  const redirectUri = isBrowser 
+    ? (import.meta.env.VITE_KEYCLOAK_REDIRECT_URI || window.location.origin)
+    : '';
+    
+  if (isBrowser) {
+    console.log('Using redirect URI:', redirectUri);
+  }
 
-  // Initialize Keycloak
+  // Initialize Keycloak only in browser environment
   useEffect(() => {
+    // Skip initialization if not in browser
+    if (!isBrowser) return;
+    
     let mounted = true;
     
     const initKeycloak = async () => {
@@ -43,7 +53,7 @@ export const KeycloakProvider = ({ children }: { children: ReactNode }) => {
           silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html',
           pkceMethod: 'S256',
           redirectUri,
-          checkLoginIframe: false,
+          checkLoginIframe: false
         });
 
         if (!mounted) return;
@@ -97,12 +107,16 @@ export const KeycloakProvider = ({ children }: { children: ReactNode }) => {
 
     return () => {
       mounted = false;
-      keycloak.onTokenExpired = undefined;
+      if (keycloak.onTokenExpired) {
+        keycloak.onTokenExpired = undefined;
+      }
     };
   }, [redirectUri]);
 
   // Login function
   const login = useCallback(async () => {
+    if (!isBrowser) return;
+    
     try {
       await keycloak.login({
         redirectUri: window.location.origin + '/dataops-hub',
@@ -115,6 +129,8 @@ export const KeycloakProvider = ({ children }: { children: ReactNode }) => {
 
   // Logout function
   const logout = useCallback(async () => {
+    if (!isBrowser) return;
+    
     try {
       sessionStorage.removeItem('kc_token');
       sessionStorage.removeItem('kc_refreshToken');
