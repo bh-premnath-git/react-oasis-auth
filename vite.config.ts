@@ -6,14 +6,12 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
-  // Load env file based on `mode` in the current directory.
-  // Set the third parameter to '' to load all env regardless of the `VITE_` prefix.
   const env = loadEnv(mode, process.cwd(), '');
   
   return {
     server: {
       host: "::",
-      port: parseInt(env.PORT || env.VITE_PORT || '8080', 10), // Use environment variable or default to 8080
+      port: parseInt(env.VITE_KEYCLOAK_PORT, 10),
     },
     plugins: [
       react(),

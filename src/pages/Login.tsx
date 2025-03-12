@@ -1,5 +1,4 @@
-
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useLocation, Navigate, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -10,6 +9,7 @@ const Login = () => {
   const { isAuthenticated, isInitialized, login } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+  const [loginAttempted, setLoginAttempted] = useState(false);
   
   // Always redirect to dashboard when authenticated
   const from = "/dashboard";
@@ -20,6 +20,17 @@ const Login = () => {
       navigate(from, { replace: true });
     }
   }, [isAuthenticated, isInitialized, from, navigate]);
+  
+  // Handle login button click
+  const handleLogin = async () => {
+    setLoginAttempted(true);
+    try {
+      await login();
+    } catch (error) {
+      console.error("Login attempt failed:", error);
+      setLoginAttempted(false);
+    }
+  };
   
   // Show loading state while Keycloak initializes
   if (!isInitialized) {
@@ -49,12 +60,22 @@ const Login = () => {
         </p>
         
         <Button 
-          onClick={login} 
+          onClick={handleLogin} 
           size="lg" 
           className="glass-button w-full"
+          disabled={loginAttempted}
         >
-          <LogIn className="mr-2 h-4 w-4" />
-          Sign in with Keycloak
+          {loginAttempted ? (
+            <>
+              <div className="w-4 h-4 border-t-2 border-b-2 border-current rounded-full animate-spin mr-2" />
+              Signing in...
+            </>
+          ) : (
+            <>
+              <LogIn className="mr-2 h-4 w-4" />
+              Sign in with Keycloak
+            </>
+          )}
         </Button>
       </motion.div>
     </div>
