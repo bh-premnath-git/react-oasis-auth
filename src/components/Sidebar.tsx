@@ -1,4 +1,3 @@
-
 import { NavLink, useNavigate } from "react-router-dom";
 import { ChevronRight, ChevronLeft, LogOut, Sun, Moon } from "lucide-react";
 import logo from "/logo.svg";
@@ -142,10 +141,10 @@ export function Sidebar() {
           ))}
         </ul>
       </nav>
-      <div className="h-16 border-t p-4">
+      <div className="h-auto border-t">
+        {/* User Profile Section */}
         <div className={cn(
-          "flex items-center",
-          "transition-all duration-300 ease-in-out",
+          "p-3 flex items-center",
           isExpanded ? "justify-between" : "justify-center"
         )}>
           <DropdownMenu>
@@ -163,7 +162,7 @@ export function Sidebar() {
                   "flex-1 ml-3 overflow-hidden",
                   "transition-all duration-300 ease-in-out",
                   isExpanded
-                    ? "opacity-100 max-w-[200px]"
+                    ? "opacity-100 max-w-[140px]"
                     : "opacity-0 max-w-0 pointer-events-none"
                 )}
               >
@@ -184,24 +183,28 @@ export function Sidebar() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+        </div>
 
+        {/* Theme Toggle Section */}
+        <div className={cn(
+          "px-3 pb-3",
+          isExpanded ? "flex justify-between items-center" : "flex justify-center"
+        )}>
+          {isExpanded && (
+            <span className="text-xs text-muted-foreground">
+              {theme === 'dark' ? 'Dark Mode' : 'Light Mode'}
+            </span>
+          )}
+          
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <div className={cn(
-                  "flex items-center gap-2",
-                  isExpanded ? "w-auto" : "justify-center"
-                )}>
-                  {isExpanded && <span className="text-xs text-muted-foreground">{theme === 'dark' ? 'Dark' : 'Light'}</span>}
+                <div className="flex items-center gap-2">
                   <Switch
                     checked={theme === 'dark'}
                     onCheckedChange={toggleTheme}
-                    className={cn(
-                      "data-[state=checked]:bg-primary data-[state=unchecked]:bg-input",
-                      !isExpanded && "ml-0" 
-                    )}
+                    className="data-[state=checked]:bg-primary data-[state=unchecked]:bg-input scale-90"
                   />
-                  <span className="sr-only">{theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}</span>
                   {theme === 'dark' ? (
                     <Moon className="h-4 w-4 text-yellow-300" />
                   ) : (
