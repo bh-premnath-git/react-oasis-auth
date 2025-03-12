@@ -1,11 +1,13 @@
 
-import { Outlet } from "react-router-dom";
+import { Outlet, Link } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, LogOut } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import { Home, User, Settings, ChevronLeft, ChevronRight, LogOut } from "lucide-react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 const ProtectedLayout = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -24,7 +26,7 @@ const ProtectedLayout = () => {
 
   return (
     <div className="min-h-screen flex">
-      {/* Sidebar */}
+      {/* Left Sidebar */}
       <motion.aside
         initial={{ width: 250 }}
         animate={{ width: isCollapsed ? 80 : 250 }}
@@ -83,43 +85,40 @@ const ProtectedLayout = () => {
   );
 };
 
-// Sidebar navigation items
+// Sidebar items data
 const sidebarItems = [
   {
     title: "Dashboard",
     path: "/dashboard",
-    icon: "Home",
+    icon: Home,
   },
   {
     title: "Profile",
     path: "/profile",
-    icon: "User",
+    icon: User,
   },
   {
     title: "Settings",
     path: "/settings",
-    icon: "Settings",
+    icon: Settings,
   },
 ];
 
 // Sidebar item component
 const SidebarItem = ({ item, isCollapsed }: { item: any; isCollapsed: boolean }) => {
-  const { title, path, icon } = item;
-  
-  // Import icon dynamically
-  const Icon = require("lucide-react")[icon];
+  const { title, path, icon: Icon } = item;
   
   return (
     <li>
       <Button
         variant="ghost"
         asChild
-        className={`w-full justify-start ${isCollapsed ? "px-0" : ""}`}
+        className={cn("w-full justify-start", isCollapsed ? "px-0" : "")}
       >
-        <a href={path}>
+        <Link to={path}>
           <Icon className="w-5 h-5 mr-2" />
           {!isCollapsed && <span>{title}</span>}
-        </a>
+        </Link>
       </Button>
     </li>
   );
