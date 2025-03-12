@@ -21,32 +21,8 @@ const Navbar = () => {
             to="/" 
             className="text-xl font-medium"
           >
-            KeycloakApp
+            Bighammer AI
           </NavLink>
-          
-          <div className="hidden sm:flex space-x-6">
-            <NavLink 
-              to="/" 
-              className={({ isActive }) => `
-                text-sm font-medium transition-colors hover:text-primary
-                ${isActive ? 'text-primary' : 'text-muted-foreground'}
-              `}
-            >
-              Home
-            </NavLink>
-            
-            {isAuthenticated && (
-              <NavLink 
-                to="/dashboard" 
-                className={({ isActive }) => `
-                  text-sm font-medium transition-colors hover:text-primary
-                  ${isActive ? 'text-primary' : 'text-muted-foreground'}
-                `}
-              >
-                Dashboard
-              </NavLink>
-            )}
-          </div>
         </div>
 
         <div className="flex items-center space-x-4">

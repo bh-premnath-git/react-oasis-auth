@@ -24,7 +24,7 @@ const Index = () => {
             transition={{ delay: 0.2, duration: 0.8 }}
           >
             <span className="inline-block px-3 py-1 text-xs font-medium bg-secondary text-secondary-foreground rounded-full">
-              Keycloak Authentication Demo
+              Bighammer AI application
             </span>
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight">
               Secure authentication with <span className="text-primary">Keycloak</span>
@@ -53,35 +53,6 @@ const Index = () => {
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             )}
-          </motion.div>
-
-          <motion.div 
-            className="glass-panel p-6 mt-12"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
-          >
-            <h2 className="text-xl font-semibold mb-4">Features</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="p-4 rounded-lg bg-background/50 border">
-                <h3 className="font-medium">Secure Authentication</h3>
-                <p className="text-sm text-muted-foreground mt-2">
-                  Enterprise-grade security with Keycloak
-                </p>
-              </div>
-              <div className="p-4 rounded-lg bg-background/50 border">
-                <h3 className="font-medium">Session Management</h3>
-                <p className="text-sm text-muted-foreground mt-2">
-                  Persistent sessions with auto-refresh
-                </p>
-              </div>
-              <div className="p-4 rounded-lg bg-background/50 border">
-                <h3 className="font-medium">Protected Routes</h3>
-                <p className="text-sm text-muted-foreground mt-2">
-                  Access control for sensitive resources
-                </p>
-              </div>
-            </div>
           </motion.div>
         </motion.div>
       </main>
