@@ -1,6 +1,6 @@
 
 import * as React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, Navigate } from "react-router-dom";
 import { navigationItems } from "@/config/navigation";
 import {
   Breadcrumb,
@@ -10,6 +10,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Home } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 interface BreadcrumbItem {
   title: string;
@@ -18,6 +19,12 @@ interface BreadcrumbItem {
 
 export function NavigationBreadcrumb() {
   const location = useLocation();
+  const { isAuthenticated } = useAuth();
+
+  // Redirect authenticated users from root to dataops-hub
+  if (location.pathname === "/" && isAuthenticated) {
+    return <Navigate to="/dataops-hub" replace />;
+  }
 
   const getBreadcrumbItems = (): BreadcrumbItem[] => {
     const currentPath = location.pathname;
