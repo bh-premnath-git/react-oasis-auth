@@ -47,17 +47,17 @@ const AppContent = () => {
 const App = () => {
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
-      <Provider store={store}>
-        <QueryClientProvider client={queryClient}>
-          <TooltipProvider>
-            <KeycloakProvider>
+      <KeycloakProvider>
+        <Provider store={store}>
+          <QueryClientProvider client={queryClient}>
+            <TooltipProvider>
               <Toaster />
               <Sonner />
               <AppContent />
-            </KeycloakProvider>
-          </TooltipProvider>
-        </QueryClientProvider>
-      </Provider>
+            </TooltipProvider>
+          </QueryClientProvider>
+        </Provider>
+      </KeycloakProvider>
     </ErrorBoundary>
   )
 };
