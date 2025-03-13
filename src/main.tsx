@@ -2,16 +2,18 @@ import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 
-// Import webcrypto polyfill at the app's entry point
-import 'webcrypto';
-
-// Ensure Web Crypto API is available
+// Patch window.crypto if it is not available but nfCrypto is
 if (typeof window !== 'undefined') {
-  if (!window.crypto || !window.crypto.subtle) {
-    console.warn('No Web Crypto API available, using polyfill.');
-  } else {
-    console.log('Web Crypto API is available.');
+    if (!window.crypto || !window.crypto.subtle) {
+      if (window.nfCrypto && window.nfCrypto.subtle) {
+        window.crypto = window.nfCrypto;
+        console.log('Polyfilled window.crypto using nfCrypto');
+      } else {
+        console.warn('No Web Crypto API available, and nfCrypto polyfill not loaded.');
+      }
+    } else {
+      console.log('Native Web Crypto API is available.');
+    }
   }
-}
 
 createRoot(document.getElementById("root")!).render(<App />);
