@@ -1,23 +1,15 @@
-
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ImportProvider } from "@/context/datacatalog/ImportContext"
+import {ImportWizard} from "@/features/data-catalog/ImportWizard"
+import { withPageErrorBoundary} from '@/components/withPageErrorBoundary';
 
 const DatasourceImport = () => {
   return (
-    <div className="space-y-4">
-      <h1 className="text-3xl font-bold">Import Data Source</h1>
-      <p className="text-muted-foreground">Add new data sources to your catalog.</p>
-      
-      <Card>
-        <CardHeader>
-          <CardTitle>Data Source Import</CardTitle>
-          <CardDescription>Connect to new data sources</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p>This page allows you to import and connect to new data sources for your catalog.</p>
-        </CardContent>
-      </Card>
+    <div className="min-h-screen p-6 bg-background">
+      <ImportProvider>
+      <ImportWizard />
+      </ImportProvider>
     </div>
-  );
-};
+  )
+}
 
-export default DatasourceImport;
+export default withPageErrorBoundary(DatasourceImport, 'DatasourceImport');

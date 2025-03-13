@@ -1,23 +1,63 @@
+import { useEffect } from 'react';
+import { withPageErrorBoundary} from '@/components/withPageErrorBoundary';
+import { DataCatalog } from '@/features/data-catalog/DataCatalog';
+import { useDataCatalogManagementService } from '@/features/data-catalog/services/datacatalogMgtSrv';
+import { LoadingState } from '@/components/shared/LoadingState';
+import { useDataCatalog } from '@/features/data-catalog/hooks/usedataCatalog';
+import { TableSkeleton } from '@/components/shared/TableSkeleton';
+import { ErrorState } from '@/components/shared/ErrorState';
+import { EmptyState } from '@/components/shared/EmptyState';
+import { Database  } from 'lucide-react';
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+function DataCatalogPage() {
+    const { datasources, isLoading, isFetching, isError, refetch } = useDataCatalog({
+      shouldFetch: true
+    });
+    const dataCatalogSrv = useDataCatalogManagementService();
+    
+    useEffect(() => {
+        if(datasources && datasources.length > 0){
+            dataCatalogSrv.setDatasources(datasources);
+        }
+    }, [datasources, dataCatalogSrv]);
 
-const DataCatalog = () => {
-  return (
-    <div className="space-y-4">
-      <h1 className="text-3xl font-bold">Data Catalog</h1>
-      <p className="text-muted-foreground">Browse and explore your data sources.</p>
-      
-      <Card>
-        <CardHeader>
-          <CardTitle>Data Catalog Dashboard</CardTitle>
-          <CardDescription>Manage and explore your data sources</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p>This is the main Data Catalog page. From here you can navigate to different data catalog features.</p>
-        </CardContent>
-      </Card>
-    </div>
-  );
-};
+    if (isError) return <ErrorState message="Something went wrong" />;
 
-export default DataCatalog;
+    if (isLoading || !datasources) {
+        return (
+          <div className="p-6">
+            <TableSkeleton />
+          </div>
+        );
+    }
+
+    if (datasources.length === 0) {
+        return (
+          <div className="p-6">
+            <EmptyState
+              title="Welcome to Your Data Catalog!"
+              description="Ready to manage your data."
+              Icon={Database}
+            />
+          </div>
+        );
+    }
+
+    return (
+        <div className="p-6">
+            <div className="relative">
+                {isFetching && (
+                  <div className="absolute inset-0 bg-background/50 backdrop-blur-sm flex items-center justify-center z-10">
+                    <LoadingState className='w-40 h-40' />
+                  </div>
+                )}
+                <DataCatalog 
+                  datasources={datasources} 
+                  onRefetch={refetch}
+                />
+            </div>
+        </div>
+    );
+}
+
+export default withPageErrorBoundary(DataCatalogPage, 'DataCatalog');
