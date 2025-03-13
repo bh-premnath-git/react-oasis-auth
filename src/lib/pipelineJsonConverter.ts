@@ -17,11 +17,14 @@ export const pipelineKeys = {
 };
 
 // Query functions
-export const usePipelineQuery = (id: string) => {
+export const usePipelineQuery = (id?: string) => {
     return useQuery({
-        queryKey: pipelineKeys.detail(id),
+        queryKey: pipelineKeys.detail(id || ''),
         queryFn: async () => {
-            const data=await apiService.get({
+            if (!id) {
+                throw new Error("Pipeline id is required");
+            }
+            const data = await apiService.get({
                 portNumber: CATALOG_API_PORT,
                 url: `/pipeline/${id}`,
                 usePrefix: true,
@@ -29,10 +32,11 @@ export const usePipelineQuery = (id: string) => {
                 metadata: {
                     errorMessage: 'Failed to fetch projects'
                 },
-                params: {limit: 1000}
-            })
+                params: { limit: 1000 }
+            });
             return data;
         },
+        enabled: !!id,
     });
 };
 
