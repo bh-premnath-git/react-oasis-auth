@@ -7,7 +7,7 @@ import { ProjectFormData, transformFormToApiData } from './components/projectFor
 import { useProjects } from './hooks/useProjects';
 import { ROUTES } from '@/config/routes';
 import { ProjectPageLayout } from './components/ProjectPageLayout';
-import { encrypt_string } from '@/services/encryption';
+import { encrypt_string } from '@/lib/encryption';
 import { Project, ProjectGitValidation } from '@/types/admin/project';
 
 const transformProjectToFormData = (project: Project): Partial<ProjectFormData> => {

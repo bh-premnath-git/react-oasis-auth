@@ -32,33 +32,34 @@ const AppContent = () => {
   }, [dispatch, authenticated]);
 
   return (
-    <BrowserRouter>
-      <ReactFlowProvider>
-        <FlowProvider>
-          <PipelineProvider>
-            <AppRoutes />
-          </PipelineProvider>
-        </FlowProvider>
-      </ReactFlowProvider>
-    </BrowserRouter>
+    <ReactFlowProvider>
+      <FlowProvider>
+        <PipelineProvider>
+          <AppRoutes />
+        </PipelineProvider>
+      </FlowProvider>
+    </ReactFlowProvider>
   );
 };
 
 const App = () => {
   return (
-    <ErrorBoundary FallbackComponent={ErrorFallback}>
-      <KeycloakProvider>
-        <Provider store={store}>
-          <QueryClientProvider client={queryClient}>
-            <TooltipProvider>
-              <Toaster />
-              <Sonner />
-              <AppContent />
-            </TooltipProvider>
-          </QueryClientProvider>
-        </Provider>
-      </KeycloakProvider>
-    </ErrorBoundary>
+    <BrowserRouter>
+
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        <KeycloakProvider>
+          <Provider store={store}>
+            <QueryClientProvider client={queryClient}>
+              <TooltipProvider>
+                <Toaster />
+                <Sonner />
+                <AppContent />
+              </TooltipProvider>
+            </QueryClientProvider>
+          </Provider>
+        </KeycloakProvider>
+      </ErrorBoundary>
+    </BrowserRouter>
   )
 };
 

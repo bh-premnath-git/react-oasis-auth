@@ -103,7 +103,6 @@ export const FormField: React.FC<FormFieldProps> = React.memo(({
             <Select>
               <SelectTrigger
                 {...field}
-                required={required}
                 disabled={disabled}
                 className={`block w-full mt-1 border ${error ? 'border-red-500' : 'border-gray-300'} rounded-md`}
                 aria-label={`Select ${fieldKey}`}
