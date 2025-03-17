@@ -131,7 +131,7 @@ export const useUsers = (options: UseUsersOptions = { mutationsOnly: true }) => 
   // List users
   const { data: usersData, isLoading, isFetching, isError } = !options.mutationsOnly 
     ? getAllUsers({
-        url: '/users/',
+        url: '/users',
         queryOptions: {
           enabled: options.shouldFetch,
           retry: 2
