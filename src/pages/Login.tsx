@@ -72,7 +72,7 @@ const Login = () => {
           ) : (
             <>
               <LogIn className="mr-2 h-4 w-4" />
-              Sign in with Keycloak
+              Sign in with Bighammer
             </>
           )}
         </Button>

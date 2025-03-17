@@ -26,12 +26,6 @@ const Index = () => {
             <span className="inline-block px-3 py-1 text-xs font-medium bg-secondary text-secondary-foreground rounded-full">
               Bighammer AI application
             </span>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight">
-              Secure authentication with <span className="text-primary">Keycloak</span>
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              A beautifully designed React application with Keycloak authentication, session storage, and secure routes.
-            </p>
           </motion.div>
 
           <motion.div 
@@ -49,7 +43,7 @@ const Index = () => {
               </Button>
             ) : (
               <Button onClick={login} size="lg" className="glass-button">
-                Sign in with Keycloak
+                Sign in with Bighammer.ai
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             )}

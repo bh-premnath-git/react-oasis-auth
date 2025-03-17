@@ -10,7 +10,7 @@ import { ConnectionValue } from '@/types/admin/connection';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { ArrowLeft, Database, RefreshCw } from 'lucide-react';
 import { toast } from 'sonner';
-import { encrypt_string } from '@/services/encryption';
+import { encrypt_string } from '@/lib/encryption';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Separator } from '@/components/ui/separator';
 import { useNavigate } from 'react-router-dom';
