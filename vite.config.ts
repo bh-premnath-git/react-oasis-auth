@@ -9,9 +9,9 @@ export default defineConfig(({ mode }) => {
 
   let httpsConfig = {};
   try {
-    httpsConfig = {
+    httpsConfig = {/* 
       key: fs.readFileSync(path.resolve(__dirname, 'key.pem')),
-      cert: fs.readFileSync(path.resolve(__dirname, 'cert.pem')),
+      cert: fs.readFileSync(path.resolve(__dirname, 'cert.pem')), */
     };
   } catch (error) {
     console.warn('SSL files not found. Running HTTP only.');
@@ -29,6 +29,9 @@ export default defineConfig(({ mode }) => {
       port: keycloakPort,
       strictPort: true,
       https: Object.keys(httpsConfig).length ? httpsConfig : false, // Enable HTTPS only if SSL files exist
+      headers: {
+        'Content-Security-Policy': "frame-ancestors 'self' https://54.82.150.27:8443/; default-src 'self' https: data: 'unsafe-inline' 'unsafe-eval';"
+      }
     },
   };
 });
