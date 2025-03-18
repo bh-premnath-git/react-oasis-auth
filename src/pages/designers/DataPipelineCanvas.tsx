@@ -4,8 +4,9 @@ import DataPipelineCanvas  from '@/features/designers/DataPipelineCanvas';
 const DataPipelineCanvasPage = () => {
   return (
     <div className="h-[90%] w-full">
+      
         <DataPipelineCanvas />
-\    </div>
+      </div>
   )
 }
 
