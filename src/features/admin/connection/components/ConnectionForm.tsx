@@ -88,12 +88,11 @@ export function ConnectionForm({
     resolver: schema ? zodResolver(generateFormSchema(schema)) : undefined,
     defaultValues: {
       name: `${connectionDisplayName} Connection`,
-      file_path_prefix: '',
       project_id: '',
       dataset_id: '',
       credentials_json: '',
       host: '',
-      port: connectionName.toLowerCase() === 'mysql' ? '3306' : '5432',
+      port: connectionName.toLowerCase() === 'mysql' ? 3306 : 5432,
       database: '',
       username: '',
       password: '',
@@ -105,12 +104,11 @@ export function ConnectionForm({
     if (schema) {
       form.reset({
         name: `${connectionDisplayName} Connection`,
-        file_path_prefix: '',
         project_id: '',
         dataset_id: '',
         credentials_json: '',
         host: '',
-        port: connectionName.toLowerCase() === 'mysql' ? '3306' : '5432',
+        port: connectionName.toLowerCase() === 'mysql' ? 3306 : 5432,
         database: '',
         username: '',
         password: '',
@@ -183,7 +181,13 @@ export function ConnectionForm({
     try {
       setIsSubmitting(true);
       
-      const configUnion = getConfigUnionForType(connectionName, data);
+      // Ensure port is a number
+      const formData = {
+        ...data,
+        port: typeof data.port === 'string' ? parseInt(data.port, 10) : data.port
+      };
+      
+      const configUnion = getConfigUnionForType(connectionName, formData);
       if (!configUnion) {
         throw new Error(`Unsupported connection type: ${connectionName}`);
       }
